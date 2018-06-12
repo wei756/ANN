@@ -8,6 +8,17 @@
   <sprites name="sprites"/>
   <backgrounds name="background"/>
   <paths name="paths"/>
+  <scripts name="scripts">
+    <script>scripts\color.gml</script>
+    <script>scripts\grid.gml</script>
+    <script>scripts\sigmoid.gml</script>
+  </scripts>
+  <objects name="objects">
+    <object>objects\Network</object>
+  </objects>
+  <rooms name="rooms">
+    <room>rooms\main</room>
+  </rooms>
   <help>
     <rtf>help.rtf</rtf>
   </help>
