@@ -25,7 +25,9 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>layer = 3;
+            <string>randomize();
+
+layer = 3;
 node = 5;
 input_count = 2;
 output_count = 1;
@@ -33,12 +35,12 @@ output_count = 1;
 
 
 //create neuron table
-neuron[0] = ds_grid_create(1, input_count + 1);
+neuron[0] = ds_grid_create(1, input_count);
 for(var l = 1; l &lt; layer - 1; l++)
 {
-    neuron[l] = ds_grid_create(ds_grid_height(neuron[l - 1]) + 2, node + 1);
+    neuron[l] = ds_grid_create(ds_grid_height(neuron[l - 1]) + 2, node);
 }
-neuron[layer - 1] = ds_grid_create(ds_grid_height(neuron[layer - 2]) + 2, output_count + 1);
+neuron[layer - 1] = ds_grid_create(ds_grid_height(neuron[layer - 2]) + 2, output_count);
 /*
 neuron table
 node0: [value, bias, w1, w2, ...]
@@ -46,13 +48,12 @@ node1: [value, bias, w1, w2, ...]
 node2: [value, bias, w1, w2, ...]
 node3: [value, bias, w1, w2, ...]
 node4: [value, bias, w1, w2, ...]
-trick node: [1, bias, 0, 0, ...]
 */
 
 //initialize node
 for(var l = 1; l &lt; layer; l++)
 {
-    for(var i = 0; i &lt; ds_grid_height(neuron[l]) - 1; i++)
+    for(var i = 0; i &lt; ds_grid_height(neuron[l]); i++)
     {
         ds_grid_set(neuron[l], 0, i, 0); // output
         ds_grid_set(neuron[l], 1, i, random(10) - 5); // bias
@@ -60,11 +61,10 @@ for(var l = 1; l &lt; layer; l++)
             ds_grid_set(neuron[l], 2 + w, i, random(10) - 5);
     }
 }
-for(var l = 0; l &lt; layer - 1; l++)
-{
-    //init trick node
-    ds_grid_set(neuron[l], 0, ds_grid_height(neuron[l]) - 1, 1);
-}
+
+//init input node
+for(var i = 0; i &lt; ds_grid_height(neuron[0]); i++)
+    ds_grid_set(neuron[0], 0, i, 0);
 </string>
           </argument>
         </arguments>
@@ -136,7 +136,7 @@ ds_grid_set(neuron[0], 0, 0, mouse_y / room_height);
             <kind>1</kind>
             <string>///neuron update
 for(var l = 1; l &lt; layer; l++)
-for(var n = 0; n &lt; ds_grid_height(neuron[l]) - 1; n++)
+for(var n = 0; n &lt; ds_grid_height(neuron[l]); n++)
 {
     var pre_layer_node_count = ds_grid_height(neuron[l - 1]), bias = grid(neuron[l], 1, n);
     var z = 0;
